@@ -1,36 +1,73 @@
 import { useState, useCallback } from "react";
 import "./styles/Work.css";
-import WorkImage from "./WorkImage";
+import WorkImage, { WorkFact } from "./WorkImage";
 import { MdArrowBack, MdArrowForward } from "react-icons/md";
 
-const projects = [
+type Project = {
+  title: string;
+  category: string;
+  summary?: string;
+  note?: string;
+  tools: string;
+  facts: WorkFact[];
+  link?: string;
+};
+
+const projects: Project[] = [
   {
-    title: "CallHQ",
-    category: "Voice AI Calling Platform",
-    tools: "Voice AI, Calling Automation, CRM Integrations",
-    image: "/images/callhq.png",
-    link: "https://callhq.ai",
+    title: "Multi-Disease Clinical Decision Support Platform",
+    category: "Explainable ML risk assessment with an LLM health assistant",
+    summary:
+      "Risk scores alone are hard to act on. I built a full-stack prototype with separately trained models for diabetes, heart, liver and kidney disease (XGBoost, LightGBM and Random Forest on public datasets), SHAP explanations for every prediction, LLaMA 3.3 recommendations via Groq, a ChromaDB/MiniLM retrieval-backed health chat, PDF reports, JWT authentication and appointment booking.",
+    note: "Decision-support prototype, not a diagnostic or clinically validated system.",
+    tools:
+      "FastAPI, Next.js, scikit-learn, XGBoost, LightGBM, SHAP, LangChain, ChromaDB, Groq (LLaMA 3.3), ReportLab",
+    facts: [
+      { value: "4", label: "disease-specific prediction pipelines" },
+      { value: "SHAP", label: "explanation behind every prediction" },
+      { value: "RAG", label: "retrieval-backed health chat" },
+    ],
+    link: "https://github.com/Hatpiee/Multi-Disease-Clinical-Decision-Support-Platform",
   },
   {
-    title: "Whatsapp Automation",
-    category: "WABA Application",
-    tools: "WhatsApp Business API, Workflow Automation, Notifications",
-    image: "/images/whatsapp.png",
-    link: "https://whatsapp.callhq.ai",
+    title: "Hybrid Career Intelligence & College Recommendation Platform",
+    category: "Hybrid recommender for career and college decisions",
+    summary:
+      "Students often get generic advice on careers and colleges. I built a hybrid system where a five-factor weighted matcher shortlists careers, semantic retrieval and LLM reasoning explain them with personalised roadmaps, and a rank-band predictor sorts colleges into Dream, Target and Safe from JEE ranks. FastAPI endpoints serve career guidance, college prediction and AssemblyAI speech-to-text, and LLM output is JSON-validated before use.",
+    tools:
+      "FastAPI, Streamlit, PostgreSQL, SQLAlchemy, LangChain, ChromaDB, Sentence-Transformers, Groq (LLaMA 3.3), AssemblyAI",
+    facts: [
+      { value: "5", label: "factor weighted career matching" },
+      { value: "26", label: "career roadmaps" },
+      { value: "189", label: "colleges in the predictor" },
+    ],
+    link: "https://github.com/Hatpiee/-Hybrid-Career-Intelligence-and-College-Recommendation-Platform",
   },
   {
-    title: "Broki",
-    category: "Real Estate Platform for FnB Industry",
-    tools: "Property Discovery, Lead Management, Marketplace Workflows",
-    image: "/images/broki.png",
-    link: "https://broki.in",
+    title: "BoldFlushX",
+    category: "IoT-enabled smart sanitation system",
+    tools: "IoT, waste segregation, sanitation automation",
+    facts: [
+      { value: "1st", label: "of 300+ teams, NSS SCE IdeaForge 2K24 (Champion)" },
+      { value: "Top 10", label: "of 300+ teams, Kshitij 2025 B-Plan, IIT Kharagpur" },
+    ],
   },
   {
-    title: "Orrdr.com",
-    category: "Ecommerce Platform and Mobile App",
-    tools: "Ecommerce, Mobile Experience, Order Management",
-    image: "/images/orrdr.png",
-    link: "https://orrdr.com",
+    title: "Nivaaz+",
+    category: "Real-time telemedicine consultation platform",
+    tools: "Telemedicine, remote consultations, digital care delivery",
+    facts: [
+      { value: "Nodal", label: "Round qualifier, Smart India Hackathon 2025" },
+      { value: "46th", label: "of 750 teams in the university selection process" },
+    ],
+  },
+  {
+    title: "QuitKit",
+    category: "Gamified smoking-cessation platform",
+    tools: "Gamification, behavioural science, AI-driven coaching",
+    facts: [
+      { value: "Top 10", label: "of 250 teams, Tech Zephyr 2025, IIT Bhubaneswar (Finalist)" },
+    ],
   },
 ];
 
@@ -95,7 +132,11 @@ const Work = () => {
               }}
             >
               {projects.map((project, index) => (
-                <div className="carousel-slide" key={index}>
+                <div
+                  className="carousel-slide"
+                  key={index}
+                  aria-hidden={index !== currentIndex}
+                >
                   <div className="carousel-content">
                     <div className="carousel-info">
                       <div className="carousel-number">
@@ -106,6 +147,12 @@ const Work = () => {
                         <p className="carousel-category">
                           {project.category}
                         </p>
+                        {project.summary && (
+                          <p className="carousel-summary">{project.summary}</p>
+                        )}
+                        {project.note && (
+                          <p className="carousel-note">{project.note}</p>
+                        )}
                         <div className="carousel-tools">
                           <span className="tools-label">Tools & Features</span>
                           <p>{project.tools}</p>
@@ -114,9 +161,10 @@ const Work = () => {
                     </div>
                     <div className="carousel-image-wrapper">
                       <WorkImage
-                        image={project.image}
                         alt={project.title}
                         link={project.link}
+                        facts={project.facts}
+                        focusable={index === currentIndex}
                       />
                     </div>
                   </div>

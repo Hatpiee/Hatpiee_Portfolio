@@ -27,3 +27,5 @@ dist-ssr
 backup/
 .env
 ._*
+
+private-reference

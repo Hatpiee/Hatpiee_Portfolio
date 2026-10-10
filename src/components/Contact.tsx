@@ -1,5 +1,6 @@
 import { MdArrowOutward, MdCopyright } from "react-icons/md";
 import "./styles/Contact.css";
+import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "../data/links";
 
 const Contact = () => {
   return (
@@ -8,30 +9,28 @@ const Contact = () => {
         <h3>Contact</h3>
         <div className="contact-flex">
           <div className="contact-box">
-            <h4>Connect</h4>
+            <h4>Email</h4>
             <p>
-              <a
-                href="https://www.linkedin.com/in/akashrmalhotra/"
-                target="_blank"
-                rel="noreferrer"
-                data-cursor="disable"
-              >
-                LinkedIn — akashrmalhotra
+              <a href={`mailto:${EMAIL}`} data-cursor="disable">
+                {EMAIL}
               </a>
             </p>
             <h4>Education</h4>
             <p>
-              PGPWE (MBA), Indian Institute of Management, Lucknow — 2021–2023
+              B.Tech Computer Science &amp; Engineering, KIIT University,
+              Bhubaneswar — 2024–2028 (expected), CGPA 9.70/10
             </p>
+            <p>Class XII 95% · Class X 97% — DAV Public School, Bhubaneswar</p>
+            <h4>Honours</h4>
             <p>
-              B.Tech Computer Science, Manav Rachna Educational Institutions —
-              2009–2013
+              Special Mention (3rd Place), KIIT MUN 2025 — 3rd among 150
+              delegates, INR 8,000 prize
             </p>
           </div>
           <div className="contact-box">
             <h4>Social</h4>
             <a
-              href="https://github.com/akashrmalhotra"
+              href={GITHUB_URL}
               target="_blank"
               rel="noreferrer"
               data-cursor="disable"
@@ -40,7 +39,7 @@ const Contact = () => {
               GitHub <MdArrowOutward />
             </a>
             <a
-              href="https://www.linkedin.com/in/akashrmalhotra/"
+              href={LINKEDIN_URL}
               target="_blank"
               rel="noreferrer"
               data-cursor="disable"
@@ -49,27 +48,16 @@ const Contact = () => {
               LinkedIn <MdArrowOutward />
             </a>
             <a
-              href="https://www.youtube.com/@Leftbraincoder"
-              target="_blank"
-              rel="noreferrer"
+              href={`mailto:${EMAIL}`}
               data-cursor="disable"
               className="contact-social"
             >
-              YouTube <MdArrowOutward />
-            </a>
-            <a
-              href="https://www.instagram.com/leftbraincoder/"
-              target="_blank"
-              rel="noreferrer"
-              data-cursor="disable"
-              className="contact-social"
-            >
-              Instagram <MdArrowOutward />
+              Email <MdArrowOutward />
             </a>
           </div>
           <div className="contact-box">
             <h2>
-              Designed and Developed <br /> by <span>Akash Malhotra</span>
+              Designed and Developed <br /> by <span>Shreyash Tripathy</span>
             </h2>
             <h5>
               <MdCopyright /> 2026
