@@ -29,3 +29,7 @@ backup/
 ._*
 
 private-reference
+
+# Character tooling outputs (decrypted model, intermediates)
+tools/character/model/
+tools/character/tier2/
