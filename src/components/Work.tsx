@@ -162,24 +162,50 @@ const projects: Project[] = [
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
+// Matches the phone breakpoint in Work.css.
+const PHONE_MAX_WIDTH = 600;
+
 const Work = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [trackHeight, setTrackHeight] = useState<number>();
+  const [slideHeights, setSlideHeights] = useState<number[]>();
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
   const touchStartX = useRef<number | null>(null);
 
-  // The track takes the height of the visible slide, so short projects don't leave
-  // a gap sized for the longest one. The controls sit above the track and stay put.
+  // Slides share one height so the page doesn't move as the carousel changes. On
+  // phones the text-heavy technical projects are roughly twice as tall as the
+  // hackathon ones, so there they form two height groups instead of leaving the
+  // short cards mostly empty. Content is centred within its slide.
   useLayoutEffect(() => {
-    const slide = slideRefs.current[currentIndex];
-    if (!slide) return;
-    const update = () => setTrackHeight(slide.offsetHeight);
-    update();
-    const observer = new ResizeObserver(update);
-    observer.observe(slide);
+    const slides = slideRefs.current;
+    const contents = slides.map((slide) =>
+      slide?.querySelector<HTMLElement>(".carousel-content")
+    );
+    const measure = () => {
+      if (!slides[0]) return;
+      const style = getComputedStyle(slides[0]);
+      const padding =
+        parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+      const split = window.innerWidth <= PHONE_MAX_WIDTH;
+      const groupOf = (i: number) => (split ? projects[i].stackLabel : "all");
+      const tallest = new Map<string, number>();
+      contents.forEach((content, i) => {
+        const height = content?.offsetHeight ?? 0;
+        tallest.set(groupOf(i), Math.max(tallest.get(groupOf(i)) ?? 0, height));
+      });
+      const next = projects.map((_, i) =>
+        Math.ceil((tallest.get(groupOf(i)) ?? 0) + padding)
+      );
+      setSlideHeights((prev) =>
+        prev && prev.join() === next.join() ? prev : next
+      );
+    };
+    measure();
+    // Slide heights don't affect content heights, so this can't loop.
+    const observer = new ResizeObserver(measure);
+    contents.forEach((content) => content && observer.observe(content));
     return () => observer.disconnect();
-  }, [currentIndex]);
+  }, []);
 
   const goToSlide = useCallback(
     (index: number) => {
@@ -260,7 +286,7 @@ const Work = () => {
         >
           <div
             className="carousel-track-container"
-            style={{ height: trackHeight }}
+            style={{ height: slideHeights?.[currentIndex] }}
             onTouchStart={onTouchStart}
             onTouchEnd={onTouchEnd}
           >
@@ -277,6 +303,7 @@ const Work = () => {
                   ref={(el) => {
                     slideRefs.current[index] = el;
                   }}
+                  style={{ minHeight: slideHeights?.[index] }}
                   role="group"
                   aria-roledescription="slide"
                   aria-label={`${index + 1} of ${projects.length}: ${project.title}`}

@@ -91,7 +91,9 @@ export function setCharTimeline(
         .fromTo(
           ".character-model",
           { pointerEvents: "inherit" },
-          { pointerEvents: "none", x: "-12%", delay: 2, duration: 5 },
+          // At the desk the character sits 15% left of centre; WhatIDo.css lays the
+          // heading and cards out around that position (--char-center).
+          { pointerEvents: "none", x: "-15%", delay: 2, duration: 5 },
           0
         )
         .to(character.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0)

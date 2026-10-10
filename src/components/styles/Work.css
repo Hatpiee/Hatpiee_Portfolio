@@ -88,12 +88,16 @@
   will-change: transform;
 }
 
+/* Each slide gets its group's height from Work.tsx and centres its content in it. */
 .carousel-slide {
   min-width: 100%;
   width: 100%;
   flex-shrink: 0;
   box-sizing: border-box;
   padding: 52px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .carousel-content {
@@ -433,6 +437,28 @@
 @media only screen and (max-width: 600px) {
   .carousel-number {
     display: none;
+  }
+
+  .carousel-slide {
+    padding: 28px 0;
+  }
+
+  .carousel-brief {
+    gap: 16px;
+    margin-top: 22px;
+  }
+
+  .carousel-brief dd {
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .carousel-stack {
+    margin-top: 20px;
+  }
+
+  .work-fact strong {
+    font-size: 32px;
   }
 
   .work-facts-featured .work-facts-grid {

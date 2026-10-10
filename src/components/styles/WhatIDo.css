@@ -407,3 +407,73 @@
     font-size: 8rem;
   }
 }
+
+/* ── Desktop composition around the 3D desk scene ──
+   The character canvas is fixed and full height, so the scene scales with the
+   viewport height while its centre follows the width. Measured from renders:
+   the chair and arms reach 12.4vh left of the character's centre and the desk
+   top reaches 48.1vh right of it. The heading and cards are placed from those
+   proportions so they clear the scene at any desktop size. */
+@media only screen and (min-width: 1025px) {
+  .whatIDO {
+    /* Character centre: GsapScroll moves the 1920px-max canvas 15% left. */
+    --char-center: calc(50vw - 0.15 * min(100vw, 1920px));
+    --scene-gap: 48px;
+    /* Above the character canvas, so a card can never sit behind the desk. */
+    z-index: 12;
+  }
+
+  .what-box:first-child {
+    justify-content: flex-end;
+    box-sizing: border-box;
+    padding-right: calc(50vw - var(--char-center) + 12.4vh + var(--scene-gap));
+  }
+
+  .what-box h2 {
+    margin-right: 0;
+    /* Shrinks only if the space left of the character gets too narrow. */
+    font-size: min(calc(4.2vw + 26px),
+        calc((var(--char-center) - 12.4vh - var(--scene-gap) - 3vw) / 2.6));
+  }
+
+  .what-box:last-child {
+    justify-content: flex-start;
+    --card-left: clamp(16px,
+        calc(var(--char-center) + 48.1vh + var(--scene-gap) - 50vw),
+        calc(100% - 316px));
+  }
+
+  .what-box-in {
+    margin-left: var(--card-left);
+    width: min(450px, calc(100% - var(--card-left) - 16px));
+    height: clamp(520px, 70vh, 600px);
+  }
+
+  .what-content {
+    width: 100%;
+    padding: 36px;
+    container-type: inline-size;
+  }
+
+  .what-content h3 {
+    font-size: min(34px, 10cqi);
+  }
+
+  /* Keeps the collapsed card's text clear of the expand arrow. */
+  .what-content p {
+    padding-right: 20px;
+  }
+
+  .what-noTouch:hover,
+  .what-content-active {
+    min-height: 74%;
+    padding: 28px 36px;
+  }
+
+  .what-noTouch:hover ~ .what-content,
+  .what-box-in:hover .what-noTouch:not(:hover),
+  .what-content.what-sibling {
+    min-height: 26%;
+    padding: 10px 36px;
+  }
+}
