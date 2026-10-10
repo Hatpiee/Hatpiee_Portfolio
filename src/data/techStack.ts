@@ -10,3 +10,50 @@ export const TECH_STACK = [
   { name: "Next.js", image: "/images/next2.webp" },
   { name: "TypeScript", image: "/images/typescript.webp" },
 ];
+
+// Grouped skills listed under the spheres. Each item appears in the technical resume,
+// the LinkedIn skills list or the code of a listed project; no proficiency levels.
+export const SKILL_GROUPS = [
+  {
+    name: "AI engineering",
+    items: [
+      "Python",
+      "Machine learning",
+      "Computer vision",
+      "NLP",
+      "LLMs",
+      "RAG",
+      "Prompt engineering",
+      "LangChain",
+      "scikit-learn",
+      "XGBoost",
+      "LightGBM",
+      "SHAP",
+      "Hugging Face",
+      "Ollama",
+      "ChromaDB",
+      "OpenCV",
+    ],
+  },
+  {
+    name: "Backend & applications",
+    items: [
+      "FastAPI",
+      "REST APIs",
+      "PostgreSQL",
+      "SQLAlchemy",
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Streamlit",
+    ],
+  },
+  {
+    name: "IoT & systems",
+    items: ["C/C++", "Embedded systems", "IoT", "Arduino", "ESP-IDF"],
+  },
+  {
+    name: "Tools",
+    items: ["Git", "GitHub", "Vercel"],
+  },
+];

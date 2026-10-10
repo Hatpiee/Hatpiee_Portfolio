@@ -172,29 +172,61 @@ body {
   padding: 140px 0 0;
 }
 
+.skill-groups {
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+
+.skill-group {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.8fr) minmax(0, 3.2fr);
+  gap: 24px;
+  align-items: baseline;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+/* The Contact section's top rule closes the list. */
+.skill-group:last-child {
+  border-bottom: none;
+}
+
+.skill-group dt {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.skill-group dd {
+  margin: 0;
+}
+
 .tech-labels ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-}
-
-.tech-labels-mobile ul {
-  justify-content: flex-start;
+  gap: 8px;
 }
 
 .tech-labels li {
-  font-size: var(--fs-small);
+  font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.02em;
   color: var(--text-soft);
-  padding: 8px 16px;
+  padding: 5px 12px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.03);
+}
+
+@media screen and (max-width: 600px) {
+  .skill-group {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
 }
 
 .tech-labels-mobile {

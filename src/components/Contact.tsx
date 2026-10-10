@@ -30,13 +30,6 @@ const Contact = () => {
               <p>2024–2028 (expected) · CGPA 9.70/10</p>
               <p>Class XII 95% · Class X 97% · DAV Public School, Bhubaneswar</p>
             </div>
-            <div className="contact-group">
-              <h4>Honours</h4>
-              <p>
-                Special Mention (3rd Place), KIIT MUN 2025 · 3rd among 150
-                delegates, INR&nbsp;8,000 prize
-              </p>
-            </div>
           </div>
           <div className="contact-box">
             <h4>Social</h4>

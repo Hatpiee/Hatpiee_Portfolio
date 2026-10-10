@@ -8,7 +8,7 @@ import {
 } from "react";
 import "./styles/Work.css";
 import WorkImage, { WorkFact } from "./WorkImage";
-import { MdArrowBack, MdArrowForward } from "react-icons/md";
+import { MdArrowBack, MdArrowForward, MdArrowOutward } from "react-icons/md";
 
 type Project = {
   title: string;
@@ -27,32 +27,65 @@ type Project = {
   featured?: boolean;
 };
 
-// Every claim below is taken from the technical resume or the public repositories.
+// Every claim below is taken from the technical resume, the LinkedIn profile, the
+// public repositories or the projects' own reports.
 const projects: Project[] = [
   {
     title: "CHITRADARSHI",
     kicker: "Flagship · PruTech Solutions internship · 2026",
-    category: "AI-powered multimodal surveillance intelligence system",
+    category: "AI-powered CCTV surveillance intelligence system",
     problem:
-      "Surveillance video has to be screened for anomalies offline, without sensitive footage leaving the site, while meeting enterprise latency, GPU-memory and data-sovereignty requirements.",
+      "CCTV footage has to be screened for anomalies on site, without sensitive video leaving the premises, while meeting enterprise latency, GPU-memory and data-privacy requirements.",
     approach:
-      "I evaluated competing vision-language architectures and video inference strategies, then designed a five-stage pipeline that combines three models for visual reasoning, speech transcription and incident reasoning, running as GPU-native inference on NVIDIA DGX Spark.",
+      "I evaluated competing vision-language architectures and video inference strategies, then designed a five-stage pipeline that combines three models for computer vision, speech transcription and language-model reasoning. It runs entirely on site as GPU-native inference on NVIDIA DGX Spark, and I worked with operators, researchers and senior stakeholders to turn monitoring needs into technical priorities.",
     stackLabel: "Stack",
     stack: [
       "Vision-language models",
       "Speech transcription",
-      "Incident reasoning",
+      "LLM reasoning",
       "GPU-native inference",
       "NVIDIA DGX Spark",
     ],
     outcomeLabel: "Evaluation",
     facts: [
-      { value: "5", label: "stage multimodal pipeline" },
-      { value: "3", label: "models working together" },
-      { value: "37", label: "anomaly categories classified" },
-      { value: "55–70 s", label: "end-to-end inference on the evaluated setup" },
+      { value: "37", label: "anomaly categories detected and classified" },
+      { value: "55–70 s", label: "end-to-end processing on the evaluated local-GPU setup" },
+      { value: "0", label: "false alarms across the tested dataset" },
+      { value: "5-stage", label: "pipeline combining 3 models" },
     ],
-    note: "Internship work for PruTech Solutions. Figures come from evaluation on the project's surveillance dataset; there is no public code or demo.",
+    note: "Internship work for PruTech Solutions. Figures come from the project's own evaluation; the zero-false-alarm result applies only to the tested dataset and conditions. There is no public code or demo.",
+    featured: true,
+  },
+  {
+    title: "CrowdShield",
+    kicker: "Flagship · TechNova Hackathon, Problem Statement 1 · 2026",
+    category: "CPU-first predictive crowd-safety and decision-support system",
+    problem:
+      "Crowd management is usually reactive: CCTV and manual supervision respond once a crush has already begun, when it is often too late to act.",
+    approach:
+      "I built a two-loop system. A quantitative loop that never blocks tracks people with YOLO11n, ByteTrack and DIS optical flow and scores crowd density, flow and pressure. Only when risk warrants it does a semantic loop run local MiniCPM-V and Qwen3-8B models through Ollama to check the scene and draft an evidence-cited report. Everything runs on CPU, and a human operator always makes the decision.",
+    stackLabel: "Stack",
+    stack: [
+      "YOLO11n",
+      "ByteTrack",
+      "DIS optical flow",
+      "MiniCPM-V · Qwen3-8B (Ollama)",
+      "FastAPI",
+      "PostgreSQL",
+      "SQLAlchemy",
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+    ],
+    outcomeLabel: "Testing",
+    facts: [
+      { value: "340+", label: "automated tests, including real model inference" },
+      { value: "0.447 s", label: "max processing stall under sustained overlapping trigger load (was 888.87 s)" },
+      { value: "~1,988×", label: "reduction in that worst-case stall" },
+      { value: "CPU", label: "only, no GPU required" },
+    ],
+    note: "The stall figures come from a single benchmark run under the project's sustained high-frequency workload; they are not a real-time guarantee. Live camera ingestion and multi-venue pilots are future work.",
+    link: "https://github.com/Hatpiee/Crowdshield",
     featured: true,
   },
   {
@@ -122,7 +155,7 @@ const projects: Project[] = [
     stack: ["IoT", "Waste segregation", "Automation", "Data-driven monitoring"],
     outcomeLabel: "Recognition",
     facts: [
-      { value: "1st", label: "among 300+ teams · Champion, NSS SCE Ideaforge 2K24" },
+      { value: "1st", label: "among 300+ teams · Champion, NSS SCE IdeaForge 2K24" },
       {
         value: "Top 10",
         label: "among 300+ teams · Finalist, B-Plan Competition, Kshitij 2025, IIT Kharagpur",
@@ -141,7 +174,7 @@ const projects: Project[] = [
     outcomeLabel: "Recognition",
     facts: [
       { value: "Nodal Round", label: "Qualified, Smart India Hackathon 2025" },
-      { value: "46th", label: "among 750 teams in the university selection process" },
+      { value: "46th", label: "in the university selection process" },
     ],
   },
   {
@@ -157,6 +190,45 @@ const projects: Project[] = [
     facts: [
       { value: "Top 10", label: "among 250 teams · Finalist, Tech Zephyr 2025, IIT Bhubaneswar" },
     ],
+  },
+];
+
+// Smaller learning projects: listed compactly under the carousel, metrics as reported
+// in the projects' own evaluation (weak spots included).
+type MinorProject = {
+  title: string;
+  summary: string;
+  stack: string;
+  metrics: WorkFact[];
+  link: string;
+};
+
+const minorProjects: MinorProject[] = [
+  {
+    title: "Credit Card Fraud Detection",
+    summary:
+      "Only 0.17% of transactions in the Kaggle dataset are fraud, so 99.97% accuracy says little; the model is judged on fraud recall and ROC-AUC, with SMOTE applied to the training split only. A learning project, not a production fraud system.",
+    stack: "Random Forest · SMOTE · StandardScaler · Streamlit",
+    metrics: [
+      { value: "0.979", label: "ROC-AUC" },
+      { value: "0.86", label: "fraud recall" },
+      { value: "0.44", label: "fraud precision" },
+      { value: "0.58", label: "fraud F1" },
+    ],
+    link: "https://github.com/Hatpiee/credit-card-fraud-detector",
+  },
+  {
+    title: "Product Review Sentiment Analyzer",
+    summary:
+      "Three-class sentiment on 568K Amazon food reviews, compared against TextBlob and VADER. Neutral 3-star reviews remain the weak spot (recall 0.33).",
+    stack: "TF-IDF · Logistic Regression · TextBlob · VADER · Streamlit",
+    metrics: [
+      { value: "89.65%", label: "accuracy" },
+      { value: "0.95", label: "positive F1" },
+      { value: "0.78", label: "negative F1" },
+      { value: "0.45", label: "neutral F1" },
+    ],
+    link: "https://github.com/Hatpiee/product-review-sentiment-analyzer",
   },
 ];
 
@@ -376,6 +448,39 @@ const Work = () => {
               />
             ))}
           </div>
+        </div>
+
+        <div className="work-more">
+          <h3 className="eyebrow">Smaller ML projects</h3>
+          <ul>
+            {minorProjects.map((project) => (
+              <li className="work-more-item" key={project.title}>
+                <div className="work-more-text">
+                  <h4>{project.title}</h4>
+                  <p>{project.summary}</p>
+                  <p className="work-more-stack">{project.stack}</p>
+                </div>
+                <dl className="work-more-metrics">
+                  {project.metrics.map((metric) => (
+                    <div key={metric.label}>
+                      <dt>{metric.label}</dt>
+                      <dd>{metric.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <a
+                  className="work-source"
+                  href={project.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  data-cursor="disable"
+                  aria-label={`${project.title} source code on GitHub (opens in a new tab)`}
+                >
+                  Source <MdArrowOutward aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

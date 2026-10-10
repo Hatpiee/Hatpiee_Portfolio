@@ -8,6 +8,7 @@ import Navbar from "./Navbar";
 import SocialIcons from "./SocialIcons";
 import WhatIDo from "./WhatIDo";
 import Work from "./Work";
+import Honors from "./Honors";
 import TechLabels from "./TechLabels";
 import setSplitText from "./utils/splitText";
 import { useLoading } from "../context/LoadingProvider";
@@ -75,6 +76,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <WhatIDo />
             <Career />
             <Work />
+            <Honors />
             {isDesktopView &&
               (isLoading ? (
                 // Same-height placeholder: the 2.5 MB physics chunk loads after the

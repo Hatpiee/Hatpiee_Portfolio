@@ -1,0 +1,114 @@
+/* Ruled list in the same language as the Work section: display-type results in the
+   accent colour, Geist text, hairline dividers. */
+.honors-section {
+  position: relative;
+  z-index: 2;
+  margin: 0 auto;
+  padding: 40px 0 80px;
+  background-color: var(--backgroundColor);
+}
+
+.honors-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.honors-item {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.8fr) minmax(0, 2.2fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: baseline;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.honors-result {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.honors-result strong {
+  font-family: var(--font-display);
+  font-stretch: var(--display-stretch);
+  font-weight: 900;
+  font-size: 44px;
+  line-height: 0.95;
+  color: var(--accentColor);
+}
+
+.honors-result span {
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--text-muted);
+}
+
+.honors-text h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.honors-text p {
+  margin: 6px 0 0;
+  font-size: var(--fs-small);
+  line-height: 1.55;
+  color: var(--text-soft);
+  max-width: 62ch;
+}
+
+.honors-issuer {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+@media only screen and (max-width: 1025px) {
+  .honors-item {
+    grid-template-columns: minmax(120px, 0.7fr) minmax(0, 2fr);
+    gap: 8px 24px;
+  }
+
+  .honors-issuer {
+    grid-column: 2;
+    text-align: left;
+  }
+
+  .honors-result strong {
+    font-size: 38px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .honors-section {
+    padding-bottom: 50px;
+  }
+
+  .honors-item {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    padding: 22px 0;
+  }
+
+  .honors-issuer {
+    grid-column: auto;
+  }
+
+  .honors-result {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .honors-result strong {
+    font-size: 34px;
+  }
+
+  .honors-text h3 {
+    font-size: 18px;
+  }
+}
