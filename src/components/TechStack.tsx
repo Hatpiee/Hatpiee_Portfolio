@@ -10,18 +10,10 @@ import {
   CylinderCollider,
   RapierRigidBody,
 } from "@react-three/rapier";
+import { TECH_STACK } from "../data/techStack";
 
 const textureLoader = new THREE.TextureLoader();
-const imageUrls = [
-  "/images/python.webp",
-  "/images/fastapi.webp",
-  "/images/postgresql.webp",
-  "/images/scikitlearn.webp",
-  "/images/huggingface.webp",
-  "/images/langchain.webp",
-  "/images/next2.webp",
-  "/images/typescript.webp",
-];
+const imageUrls = TECH_STACK.map((tech) => tech.image);
 const textures = imageUrls.map((url) => textureLoader.load(url));
 
 const sphereGeometry = new THREE.SphereGeometry(1, 28, 28);
@@ -170,7 +162,9 @@ const TechStack = () => {
 
   return (
     <div className="techstack">
-      <h2> My Techstack</h2>
+      <h2 className="section-heading">
+        My tech <span>stack</span>
+      </h2>
 
       <Canvas
         aria-hidden="true"

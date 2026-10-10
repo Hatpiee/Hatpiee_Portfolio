@@ -4,9 +4,9 @@ const Career = () => {
   return (
     <div className="career-section section-container">
       <div className="career-container">
-        <h2>
-          My career <span>&</span>
-          <br /> experience
+        <h2 className="section-heading">
+          My career &amp;
+          <br /> <span>experience</span>
         </h2>
         <div className="career-info">
           <div className="career-timeline">
@@ -21,9 +21,9 @@ const Career = () => {
               <h3>2026</h3>
             </div>
             <p>
-              May – Jul 2026. Worked on an offline, multimodal AI surveillance
-              project, evaluating model and inference approaches against
-              latency, memory and data-sovereignty requirements.
+              May – Jul 2026. Engineered CHITRADARSHI, an offline multimodal
+              surveillance intelligence system, from model evaluation to a
+              GPU-native inference pipeline. Featured first under My Work.
             </p>
           </div>
           <div className="career-info-box">

@@ -19,9 +19,11 @@
   z-index: 9;
 }
 .what-box h2 {
-  font-size: calc(4vw + 25px);
-  line-height: calc(4vw + 20px);
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-stretch: var(--display-stretch);
+  font-size: calc(4.2vw + 26px);
+  line-height: 0.9;
+  font-weight: 900;
   margin-right: 10%;
   margin-bottom: 100px;
 }
@@ -34,7 +36,7 @@
 }
 .what-box-in {
   flex-direction: column;
-  height: 500px;
+  height: 540px;
   margin-left: 200px;
   position: relative;
   display: none;
@@ -50,35 +52,40 @@
   box-sizing: border-box;
 }
 
+/* The open card gets 70% of the height so its full tag list fits. */
 .what-noTouch:hover,
 .what-content-active {
-  min-height: 67%;
-  padding: 40px 50px;
+  min-height: 70%;
+  padding: 32px 50px;
 }
 
 .what-noTouch:hover ~ .what-content,
 .what-box-in:hover .what-noTouch:not(:hover),
 .what-content.what-sibling {
-  min-height: 33%;
+  min-height: 30%;
   padding: 10px 50px;
 }
 .what-content h3 {
-  font-size: 35px;
-  letter-spacing: 1px;
-  margin: 0;
+  font-family: var(--font-display);
+  font-stretch: 75%;
+  font-weight: 800;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  margin: 0 0 8px;
 }
 .what-content p {
   font-size: 14px;
-  line-height: 18px;
-  font-weight: 200;
-  letter-spacing: 0.7px;
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--text-soft);
+  margin: 12px 0;
 }
 .what-content h4 {
-  font-weight: 300;
-  letter-spacing: 1px;
+  font-weight: 400;
   margin: 0px;
   font-size: 14px;
-  opacity: 0.3;
+  color: var(--text-muted);
 }
 .what-content-in {
   opacity: 0;
@@ -209,12 +216,12 @@
   overflow: hidden;
 }
 .what-content-in h5 {
-  font-weight: 300;
-  opacity: 0.5;
-  font-size: 12px;
-  letter-spacing: 1px;
-  font-family: "Geist", sans-serif;
-  margin-bottom: 5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
 }
 @keyframes whatBorders {
   80% {
@@ -232,12 +239,22 @@
   flex-wrap: wrap;
 }
 .what-tags {
-  font-size: 13px;
-  font-weight: 400;
-  padding: 2px 7px;
-  background-color: rgba(255, 255, 255, 0.15);
-  border: 1px solid #ffffff50;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 9px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 30px;
+}
+/* A collapsed card fades out at its edge instead of cutting a line of text in half. */
+.what-content .what-content-in {
+  -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent 98%);
+  mask-image: linear-gradient(to bottom, #000 70%, transparent 98%);
+}
+.what-noTouch:hover .what-content-in,
+.what-content-active .what-content-in {
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 @media only screen and (max-width: 1600px) {
   .what-box h2 {
@@ -249,10 +266,10 @@
     margin-right: 20%;
   }
   .what-box-in {
-    height: 400px;
+    height: 500px;
   }
   .what-content h3 {
-    font-size: 28px;
+    font-size: 30px;
   }
   .what-content {
     padding: 30px;
@@ -302,14 +319,14 @@
   }
   .what-noTouch:hover,
   .what-content-active {
-    min-height: 67%;
-    padding: 50px;
+    min-height: 70%;
+    padding: 40px 50px;
   }
 
   .what-noTouch:hover ~ .what-content,
   .what-box-in:hover .what-noTouch:not(:hover),
   .what-content.what-sibling {
-    min-height: 33%;
+    min-height: 30%;
     padding: 10px 50px;
   }
 }
@@ -319,14 +336,13 @@
   }
   .what-box h2 {
     margin: 50px 0;
-    font-size: 55px;
-    line-height: 53px;
+    font-size: var(--fs-section);
   }
   .what-box:first-child {
     justify-content: left;
   }
   .what-box:last-child {
-    height: 500px;
+    height: 580px;
   }
   .what-box {
     width: 500px;
@@ -338,7 +354,7 @@
   }
   .what-box-in {
     margin-left: 0px;
-    height: 450px;
+    height: 540px;
   }
   .what-content h5,
   .what-content-flex {
@@ -355,14 +371,15 @@
     padding: 30px;
   }
   .what-content p {
-    font-size: 11px;
+    font-size: 13px;
+    margin: 10px 0;
   }
   .what-noTouch:hover,
   .what-content-active {
     padding: 10px 30px;
   }
   .what-tags {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .what-noTouch:hover ~ .what-content,
@@ -387,7 +404,6 @@
 }
 @media only screen and (min-width: 1950px) {
   .what-box h2 {
-    font-size: 7rem;
-    line-height: 6.8rem;
+    font-size: 8rem;
   }
 }

@@ -171,61 +171,61 @@
 .landing-intro {
   position: absolute;
   z-index: 9;
-  top: 12%;
+  top: 11%;
   left: 0;
 }
 
 .landing-intro h2 {
-  margin: 0;
+  margin: 0 0 10px;
   color: var(--accentColor);
-  font-size: 22px;
-  font-weight: 300;
-  letter-spacing: 2px;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
 }
 
+/* Display name: heavy condensed grotesk, two deliberate lines, tight leading. */
 .landing-intro h1 {
   margin: 0;
-  letter-spacing: 2px;
-  font-size: 28px;
-  line-height: 28px;
-  font-weight: 500;
-  font-family: "Geist", sans-serif;
+  font-family: var(--font-display);
+  font-stretch: var(--display-stretch);
+  font-weight: 900;
+  font-size: clamp(56px, 17vw, 84px);
+  line-height: 0.88;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  /* SplitText wraps each letter in an inline block; keep each name on one line. */
+  white-space: nowrap;
 }
-
-/* .landing-intro h1 span {
-   font-weight: 200; 
-} */
 
 .landing-info {
   position: absolute;
-  right: 50%;
-  transform: translateX(50%);
+  left: 0;
   bottom: 40px;
   top: inherit;
   z-index: 9;
 }
 
 .landing-info h3 {
-  font-size: 22px;
-  letter-spacing: 2px;
-  font-weight: 300;
+  font-size: 17px;
+  letter-spacing: 0.06em;
+  font-weight: 400;
   color: var(--accentColor);
-  margin: 0;
+  margin: 0 0 6px;
 }
 
 .landing-info h2 {
   margin: 0;
-  margin-top: -20px;
-  margin-left: 20px;
-  font-family: "Geist", sans-serif;
-  font-weight: 600;
-  font-size: 32px;
-  line-height: 40px;
+  margin-top: -0.22em;
+  font-family: var(--font-display);
+  font-stretch: var(--display-stretch);
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 1;
   position: relative;
   display: flex;
   flex-wrap: nowrap;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 0.01em;
 }
 
 .landing-h2-info-1 {
@@ -235,13 +235,13 @@
 
 h2.landing-info-h2 {
   color: #14b8a6;
-  font-size: 42px;
+  font-size: 48px;
+  line-height: 0.95;
   width: 120%;
   margin: 0;
-  font-family: "Geist", sans-serif;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 900;
   position: relative;
-  margin-left: -5px;
 }
 
 .landing-h2-2 {
@@ -249,17 +249,11 @@ h2.landing-info-h2 {
   top: 0;
 }
 
-.landing-info-h2::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 120%;
-  z-index: 3;
-  background-image: linear-gradient(0deg,
-      var(--backgroundColor) 40%,
-      rgba(0, 0, 0, 0) 110%);
-  top: 0;
-  left: 0;
+/* The accent line fades out towards its base. A mask (rather than the template's
+   background-coloured overlay) keeps the fade from drawing a box over the character. */
+h2.landing-info-h2 {
+  -webkit-mask-image: linear-gradient(to top, transparent 22%, #000 105%);
+  mask-image: linear-gradient(to top, transparent 22%, #000 105%);
 }
 
 @media screen and (min-width: 500px) {
@@ -270,28 +264,6 @@ h2.landing-info-h2 {
   .character-model {
     z-index: 0;
   }
-
-  .landing-info h3 {
-    font-size: 18px;
-  }
-
-  .landing-intro h2 {
-    font-size: 18px;
-  }
-
-  .landing-intro h1 {
-    font-size: 30px;
-    line-height: 30px;
-  }
-
-  .landing-info h2 {
-    font-size: 35px;
-    line-height: 40px;
-  }
-
-  h2.landing-info-h2 {
-    font-size: 38px;
-  }
 }
 
 @media screen and (min-width: 768px) {
@@ -299,26 +271,21 @@ h2.landing-info-h2 {
     height: 80vh;
   }
 
-  .landing-intro h2 {
-    font-size: 25px;
+  .landing-intro h2,
+  .landing-info h3 {
+    font-size: 20px;
   }
 
   .landing-intro h1 {
-    font-size: 40px;
-    line-height: 35px;
-  }
-
-  .landing-info h3 {
-    font-size: 25px;
+    font-size: 104px;
   }
 
   .landing-info h2 {
-    font-size: 45px;
-    line-height: 42px;
+    font-size: 60px;
   }
 
   h2.landing-info-h2 {
-    font-size: 55px;
+    font-size: 72px;
   }
 }
 
@@ -342,6 +309,10 @@ h2.landing-info-h2 {
     transform: translate(0%, -50%);
   }
 
+  .landing-intro h1 {
+    font-size: clamp(60px, 6vw, 124px);
+  }
+
   .landing-info {
     bottom: auto;
     top: 51%;
@@ -351,47 +322,29 @@ h2.landing-info-h2 {
     right: auto;
     left: 66%;
   }
+
+  .landing-info h2 {
+    font-size: clamp(40px, 4.2vw, 76px);
+  }
+
+  h2.landing-info-h2 {
+    font-size: clamp(48px, 5vw, 84px);
+  }
 }
 
 @media screen and (min-width: 1200px) {
   .landing-intro {
-    top: 50%;
-    left: auto;
     right: 70%;
-    transform: translate(0%, -50%);
   }
 
   .landing-info {
-    bottom: auto;
-    top: 51%;
-    z-index: inherit;
-    text-align: left;
-    transform: translate(0%, -50%);
-    right: auto;
     left: 70%;
   }
 }
 
 @media screen and (min-width: 1600px) {
-  .landing-intro h2 {
-    font-size: 35px;
-  }
-
-  .landing-intro h1 {
-    font-size: 60px;
-    line-height: 55px;
-  }
-
+  .landing-intro h2,
   .landing-info h3 {
-    font-size: 35px;
-  }
-
-  .landing-info h2 {
-    font-size: 65px;
-    line-height: 62px;
-  }
-
-  h2.landing-info-h2 {
-    font-size: 75px;
+    font-size: 24px;
   }
 }

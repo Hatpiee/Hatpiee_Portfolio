@@ -8,27 +8,16 @@
   opacity: 1;
   height: auto;
   margin: auto;
-  margin-bottom: 250px;
+  margin-bottom: 160px;
   padding: 120px 0px;
 }
 
-.career-section h2 {
-  font-size: 70px;
-  line-height: 70px;
-  font-weight: 400;
-  text-align: center;
-  background: linear-gradient(0deg, #0d9488, #ffffff);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  margin-top: 50px;
-  margin-bottom: 90px;
+.career-container {
+  width: 100%;
 }
 
-.career-section h2>span {
-  font-family: "Geist", sans-serif;
-  font-weight: 300;
+.career-section h2 {
+  margin-top: 50px;
 }
 
 .career-info {
@@ -46,8 +35,10 @@
 
 .career-info-box p {
   width: 40%;
-  font-size: 18px;
-  font-weight: 300;
+  font-size: 17px;
+  line-height: 1.6;
+  font-weight: 400;
+  color: var(--text-soft);
   margin: 0;
 }
 
@@ -59,26 +50,27 @@
 }
 
 .career-info h3 {
-  font-size: 48px;
+  font-family: var(--font-display);
+  font-stretch: var(--display-stretch);
+  font-size: 56px;
   margin: 0;
-  font-weight: 500;
-  line-height: 45px;
+  font-weight: 900;
+  line-height: 0.9;
+  color: rgba(234, 229, 236, 0.85);
 }
 
 .career-info h4 {
-  font-size: 33px;
-  line-height: 30px;
-  letter-spacing: 0.8px;
-  font-weight: 500;
+  font-size: 28px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-weight: 600;
   margin: 0;
 }
 
 .career-info h5 {
   font-weight: 400;
-  letter-spacing: 0.7px;
-  font-size: 20px;
-  text-transform: capitalize;
-  margin: 10px 0px;
+  font-size: 17px;
+  margin: 8px 0px;
   color: var(--accentColor);
 }
 
@@ -143,27 +135,21 @@
 }
 
 @media only screen and (max-width: 1400px) {
-  .career-section h2 {
-    font-size: 50px;
-    line-height: 50px;
-  }
-
   .career-info h4 {
     font-size: 22px;
-    line-height: 24px;
-    width: 180px;
+    width: 200px;
   }
 
   .career-info h5 {
-    font-size: 17px;
+    font-size: 15px;
   }
 
   .career-info h3 {
-    font-size: 40px;
+    font-size: 44px;
   }
 
   .career-info-box p {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .career-info-in {
@@ -215,8 +201,6 @@
 
   .career-section h2 {
     width: 100%;
-    font-size: 45px;
-    line-height: 45px;
     margin-top: 0px;
   }
 
@@ -225,7 +209,7 @@
   }
 
   .career-info h3 {
-    font-size: 33px;
+    font-size: 40px;
   }
 
   .career-info-in,

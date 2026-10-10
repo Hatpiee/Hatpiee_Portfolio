@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap");
+/* Fonts are linked from index.html: Archivo (display) and Geist (text). */
 
 :root {
-  font-family: "Geist", sans-serif;
+  font-family: var(--font-body);
 
   font-optical-sizing: auto;
   font-style: normal;
@@ -22,6 +22,19 @@
   --backgroundColor: #0a0e17;
   --vh: 100vh;
   --vh: 100svh;
+
+  /* Type system: a heavy condensed grotesk for display, Geist for everything else. */
+  --font-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display-stretch: 70%;
+  --text-muted: #a3a6ad;
+  --text-soft: #cfd1d6;
+  --line: rgba(255, 255, 255, 0.12);
+  --fs-eyebrow: 13px;
+  --fs-small: 14px;
+  --fs-body: 16px;
+  --fs-lead: 18px;
+  --fs-section: clamp(52px, 7vw, 120px);
 }
 
 h1,
@@ -30,7 +43,35 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Geist", sans-serif;
+  font-family: var(--font-body);
+}
+
+/* Shared section heading: oversized, heavy and condensed, with tight leading. */
+.section-heading {
+  font-family: var(--font-display);
+  font-stretch: var(--display-stretch);
+  font-weight: 850;
+  font-size: var(--fs-section);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  word-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 clamp(36px, 5vw, 72px);
+}
+
+.section-heading span {
+  color: var(--accentColor);
+}
+
+/* Small uppercase label above headings and content groups. */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accentColor);
+  margin: 0;
 }
 
 body {
@@ -114,14 +155,50 @@ body {
 }
 
 .techstack h2 {
-  font-size: 80px;
   text-align: center;
   position: absolute;
   width: 100%;
   top: 120px;
   left: 0;
-  font-weight: 400;
-  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Text list of the technologies on the spheres (and the whole section on touch layouts). */
+.tech-labels {
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  background-color: var(--backgroundColor);
+  padding: 140px 0 0;
+}
+
+.tech-labels ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.tech-labels-mobile ul {
+  justify-content: flex-start;
+}
+
+.tech-labels li {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-soft);
+  padding: 8px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.tech-labels-mobile {
+  padding-top: 40px;
 }
 
 @media screen and (min-width: 768px) {
@@ -130,11 +207,6 @@ body {
   }
 }
 
-@media screen and (max-width: 900px) {
-  .techstack h2 {
-    font-size: 40px;
-  }
-}
 /* Keyboard focus is visible everywhere; mouse clicks don't show the ring. */
 :focus-visible {
   outline: 2px solid var(--accentColor);

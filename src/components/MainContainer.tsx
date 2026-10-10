@@ -8,6 +8,7 @@ import Navbar from "./Navbar";
 import SocialIcons from "./SocialIcons";
 import WhatIDo from "./WhatIDo";
 import Work from "./Work";
+import TechLabels from "./TechLabels";
 import setSplitText from "./utils/splitText";
 import { useLoading } from "../context/LoadingProvider";
 
@@ -24,13 +25,41 @@ const MainContainer = ({ children }: PropsWithChildren) => {
       setSplitText();
       setIsDesktopView(window.innerWidth > 1024);
     };
-    // Split text only once the web font is in, so line breaks are measured correctly.
-    document.fonts.ready.then(resizeHandler);
+    // Split text only once the web fonts are in, so line breaks are measured correctly.
+    // The display face is requested explicitly: headings below the fold may not have
+    // triggered its download yet.
+    Promise.all([
+      document.fonts.load('800 1em "Archivo"'),
+      document.fonts.load('400 1em "Geist"'),
+    ])
+      .catch(() => undefined)
+      .then(() => document.fonts.ready)
+      .then(resizeHandler);
     window.addEventListener("resize", resizeHandler);
     return () => {
       window.removeEventListener("resize", resizeHandler);
     };
   }, [isDesktopView]);
+
+  // Re-split when the content width changes without a window resize, e.g. when the
+  // scrollbar appears after the intro. Otherwise lines measured at the old width wrap.
+  useEffect(() => {
+    const content = document.getElementById("smooth-content");
+    if (!content) return;
+    let width = content.clientWidth;
+    let frame = 0;
+    const observer = new ResizeObserver(() => {
+      if (content.clientWidth === width) return;
+      width = content.clientWidth;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => setSplitText());
+    });
+    observer.observe(content);
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, []);
 
   return (
     <div className="container-main">
@@ -56,6 +85,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
                   <TechStack />
                 </Suspense>
               ))}
+            <TechLabels standalone={!isDesktopView} />
             <Contact />
           </div>
         </div>

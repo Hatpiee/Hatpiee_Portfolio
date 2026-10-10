@@ -32,8 +32,7 @@ export function initialFX() {
     const [white, , teal] = [".landing-h2-info", ".landing-h2-info-1", ".landing-h2-1", ".landing-h2-2"].map(
       (selector) => new SplitText(selector, TextProps)
     );
-    // The animated version ends with transformed chars, which keeps them above the
-    // fade overlay; reproduce that end state without the motion.
+    // Reproduce the animated version's end state without the motion.
     gsap.set([...white.chars, ...teal.chars], { opacity: 1, y: 0 });
     gsap.set(".landing-info-h2", { opacity: 1, y: 0 });
     gsap.set([".landing-h2-2", ".landing-h2-info-1"], { opacity: 0 });

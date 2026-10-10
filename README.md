@@ -17,8 +17,12 @@ template.
 
 - **Content:** hero, about, skills, experience timeline, projects, contact and metadata
   (`src/components/`, `src/data/links.ts`, `index.html`).
-- **Projects:** the work carousel shows verified facts in place of screenshots. Projects with
-  public source code link to their GitHub repositories.
+- **Projects:** the work carousel leads with CHITRADARSHI (PruTech internship) and presents
+  each project as problem, contribution, stack and verified outcome, with fact panels in place
+  of screenshots. Projects with public source code link to their GitHub repositories.
+- **Typography:** headings use [Archivo](https://fonts.google.com/specimen/Archivo) (Omnibus-Type)
+  at a condensed width; body text uses [Geist](https://fonts.google.com/specimen/Geist)
+  (Vercel). Both are SIL Open Font License 1.1 and load from Google Fonts.
 - **Tech-stack spheres:** new textures generated from [Simple Icons](https://simpleicons.org/)
   marks (CC0).
 - **3D character:** the original model (`public/models/character.enc`) is unchanged. Clothing
