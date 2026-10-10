@@ -8,21 +8,15 @@ const WhatIDo = () => {
     containerRef.current[index] = el;
   };
   useEffect(() => {
-    if (ScrollTrigger.isTouch) {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.classList.remove("what-noTouch");
-          container.addEventListener("click", () => handleClick(container));
-        }
-      });
-    }
-    return () => {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.removeEventListener("click", () => handleClick(container));
-        }
-      });
-    };
+    if (!ScrollTrigger.isTouch) return;
+    const handlers = containerRef.current.flatMap((container) => {
+      if (!container) return [];
+      const onClick = () => handleClick(container);
+      container.classList.remove("what-noTouch");
+      container.addEventListener("click", onClick);
+      return [() => container.removeEventListener("click", onClick)];
+    });
+    return () => handlers.forEach((remove) => remove());
   }, []);
   return (
     <div className="whatIDO">
@@ -61,6 +55,9 @@ const WhatIDo = () => {
           <div
             className="what-content what-noTouch"
             ref={(el) => setRef(el, 0)}
+            tabIndex={0}
+            onFocus={(e) => setFocused(e.currentTarget, true)}
+            onBlur={(e) => setFocused(e.currentTarget, false)}
           >
             <div className="what-border1">
               <svg height="100%">
@@ -114,6 +111,9 @@ const WhatIDo = () => {
           <div
             className="what-content what-noTouch"
             ref={(el) => setRef(el, 1)}
+            tabIndex={0}
+            onFocus={(e) => setFocused(e.currentTarget, true)}
+            onBlur={(e) => setFocused(e.currentTarget, false)}
           >
             <div className="what-border1">
               <svg height="100%">
@@ -174,4 +174,14 @@ function handleClick(container: HTMLDivElement) {
       }
     });
   }
+}
+
+// Keyboard focus expands a card the same way hover (or a tap on touch) does.
+function setFocused(container: HTMLDivElement, focused: boolean) {
+  container.classList.toggle("what-content-active", focused);
+  Array.from(container.parentElement?.children ?? []).forEach((sibling) => {
+    if (sibling !== container && sibling.classList.contains("what-content")) {
+      sibling.classList.toggle("what-sibling", focused);
+    }
+  });
 }

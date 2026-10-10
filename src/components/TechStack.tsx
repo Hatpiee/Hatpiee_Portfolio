@@ -135,20 +135,22 @@ const TechStack = () => {
         .getBoundingClientRect().top;
       setIsActive(scrollY > threshold);
     };
-    document.querySelectorAll(".header a").forEach((elem) => {
-      const element = elem as HTMLAnchorElement;
-      element.addEventListener("click", () => {
-        const interval = setInterval(() => {
-          handleScroll();
-        }, 10);
-        setTimeout(() => {
-          clearInterval(interval);
-        }, 1000);
-      });
-    });
+    const timers: number[] = [];
+    const onNavClick = () => {
+      const interval = window.setInterval(handleScroll, 10);
+      timers.push(interval, window.setTimeout(() => clearInterval(interval), 1000));
+    };
+    const navLinks = document.querySelectorAll<HTMLAnchorElement>(".header a");
+    navLinks.forEach((link) => link.addEventListener("click", onNavClick));
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
     return () => {
+      navLinks.forEach((link) => link.removeEventListener("click", onNavClick));
       window.removeEventListener("scroll", handleScroll);
+      timers.forEach((t) => {
+        clearInterval(t);
+        clearTimeout(t);
+      });
     };
   }, []);
   const materials = useMemo(() => {
@@ -171,6 +173,7 @@ const TechStack = () => {
       <h2> My Techstack</h2>
 
       <Canvas
+        aria-hidden="true"
         shadows
         gl={{ alpha: true, stencil: false, depth: false, antialias: false }}
         camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}

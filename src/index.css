@@ -135,3 +135,37 @@ body {
     font-size: 40px;
   }
 }
+/* Keyboard focus is visible everywhere; mouse clicks don't show the ring. */
+:focus-visible {
+  outline: 2px solid var(--accentColor);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Contact details stay copyable even though the template disables selection. */
+.contact-section,
+.contact-section * {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Looping decorations hold their first frame instead of jumping to the end. */
+  .landing-circle1,
+  .landing-circle2,
+  .career-dot,
+  .loading-box,
+  .loaderGame-in,
+  .loaderGame-ball {
+    animation-play-state: paused !important;
+  }
+}

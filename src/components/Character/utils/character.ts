@@ -12,6 +12,8 @@ const setCharacter = (
   const loader = new GLTFLoader();
   const dracoLoader = new DRACOLoader();
   dracoLoader.setDecoderPath("/draco/");
+  // public/draco ships the JS decoder only (no WASM wrapper), so use it explicitly.
+  dracoLoader.setDecoderConfig({ type: "js" });
   loader.setDRACOLoader(dracoLoader);
 
   const loadCharacter = async (): Promise<GLTF> => {

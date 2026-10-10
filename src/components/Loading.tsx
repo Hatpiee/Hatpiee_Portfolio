@@ -3,6 +3,7 @@ import "./styles/Loading.css";
 import { useLoading } from "../context/LoadingProvider";
 
 import Marquee from "react-fast-marquee";
+import { prefersReducedMotion } from "./utils/motion";
 
 const Loading = ({ percent }: { percent: number }) => {
   const { setIsLoading } = useLoading();
@@ -10,28 +11,37 @@ const Loading = ({ percent }: { percent: number }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [clicked, setClicked] = useState(false);
 
-  if (percent >= 100) {
-    setTimeout(() => {
+  const complete = percent >= 100;
+  useEffect(() => {
+    if (!complete) return;
+    let inner: number | undefined;
+    const outer = window.setTimeout(() => {
       setLoaded(true);
-      setTimeout(() => {
-        setIsLoaded(true);
-      }, 1000);
+      inner = window.setTimeout(() => setIsLoaded(true), 1000);
     }, 600);
-  }
+    return () => {
+      clearTimeout(outer);
+      clearTimeout(inner);
+    };
+  }, [complete]);
 
   useEffect(() => {
+    if (!isLoaded) return;
+    let timer: number | undefined;
+    let cancelled = false;
     import("./utils/initialFX").then((module) => {
-      if (isLoaded) {
-        setClicked(true);
-        setTimeout(() => {
-          if (module.initialFX) {
-            module.initialFX();
-          }
-          setIsLoading(false);
-        }, 900);
-      }
+      if (cancelled) return;
+      setClicked(true);
+      timer = window.setTimeout(() => {
+        module.initialFX?.();
+        setIsLoading(false);
+      }, 900);
     });
-  }, [isLoaded]);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [isLoaded, setIsLoading]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
     const { currentTarget: target } = e;
@@ -61,7 +71,7 @@ const Loading = ({ percent }: { percent: number }) => {
       </div>
       <div className="loading-screen">
         <div className="loading-marquee">
-          <Marquee>
+          <Marquee play={!prefersReducedMotion()}>
             <span> AI Engineer</span> <span>Applied ML Developer</span>
             <span> AI Engineer</span> <span>Applied ML Developer</span>
           </Marquee>
@@ -97,7 +107,7 @@ export const setProgress = (setLoading: (value: number) => void) => {
 
   let interval = setInterval(() => {
     if (percent <= 50) {
-      let rand = Math.round(Math.random() * 5);
+      const rand = Math.round(Math.random() * 5);
       percent = percent + rand;
       setLoading(percent);
     } else {
@@ -112,9 +122,16 @@ export const setProgress = (setLoading: (value: number) => void) => {
     }
   }, 100);
 
+  // Finishes immediately (e.g. when the model fails), so the site never stays behind the loader.
   function clear() {
     clearInterval(interval);
+    percent = 100;
     setLoading(100);
+  }
+
+  // Stops the timer without completing (unmount).
+  function stop() {
+    clearInterval(interval);
   }
 
   function loaded() {
@@ -131,5 +148,5 @@ export const setProgress = (setLoading: (value: number) => void) => {
       }, 2);
     });
   }
-  return { loaded, percent, clear };
+  return { loaded, percent, clear, stop };
 };

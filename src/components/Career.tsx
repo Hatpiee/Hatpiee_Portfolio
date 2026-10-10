@@ -60,7 +60,7 @@ const Career = () => {
                 <h4>Senior Marketing Executive</h4>
                 <h5>FED KIIT</h5>
               </div>
-              <h3>2024–25</h3>
+              <h3>2025</h3>
             </div>
             <p>
               Nov 2024 – Dec 2025. Coordinated sponsorship engagement for 6

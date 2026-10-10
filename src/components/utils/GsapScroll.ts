@@ -1,12 +1,18 @@
 import * as THREE from "three";
 import gsap from "gsap";
 
+// Rebuilt on every resize, so the flicker timer and timeline must not stack up.
+let flickerInterval: number | undefined;
+let flickerTimeline: gsap.core.Timeline | undefined;
+
 export function setCharTimeline(
   character: THREE.Object3D<THREE.Object3DEventMap> | null,
   camera: THREE.PerspectiveCamera
 ) {
   let intensity: number = 0;
-  setInterval(() => {
+  clearInterval(flickerInterval);
+  flickerTimeline?.kill();
+  flickerInterval = window.setInterval(() => {
     intensity = Math.random();
   }, 200);
   const tl1 = gsap.timeline({
@@ -36,10 +42,12 @@ export function setCharTimeline(
       invalidateOnRefresh: true,
     },
   });
-  let screenLight: any, monitor: any;
-  character?.children.forEach((object: any) => {
+  type MeshStd = THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>;
+  let screenLight: MeshStd | undefined, monitor: MeshStd | undefined;
+  character?.children.forEach((object) => {
     if (object.name === "Plane004") {
-      object.children.forEach((child: any) => {
+      object.children.forEach((obj) => {
+        const child = obj as MeshStd;
         child.material.transparent = true;
         child.material.opacity = 0;
         if (child.material.name === "Material.018") {
@@ -49,18 +57,19 @@ export function setCharTimeline(
       });
     }
     if (object.name === "screenlight") {
-      object.material.transparent = true;
-      object.material.opacity = 0;
-      object.material.emissive.set("#B0F5EA");
-      gsap.timeline({ repeat: -1, repeatRefresh: true }).to(object.material, {
+      const light = object as MeshStd;
+      light.material.transparent = true;
+      light.material.opacity = 0;
+      light.material.emissive.set("#B0F5EA");
+      flickerTimeline = gsap.timeline({ repeat: -1, repeatRefresh: true }).to(light.material, {
         emissiveIntensity: () => intensity * 8,
         duration: () => Math.random() * 0.6,
         delay: () => Math.random() * 0.1,
       });
-      screenLight = object;
+      screenLight = light;
     }
   });
-  let neckBone = character?.getObjectByName("spine005");
+  const neckBone = character?.getObjectByName("spine005");
   if (window.innerWidth > 1024) {
     if (character) {
       tl1
@@ -87,8 +96,8 @@ export function setCharTimeline(
         )
         .to(character.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0)
         .to(neckBone!.rotation, { x: 0.6, delay: 2, duration: 3 }, 0)
-        .to(monitor.material, { opacity: 1, duration: 0.8, delay: 3.2 }, 0)
-        .to(screenLight.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0)
+        .to(monitor!.material, { opacity: 1, duration: 0.8, delay: 3.2 }, 0)
+        .to(screenLight!.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0)
         .fromTo(
           ".what-box-in",
           { display: "none" },
@@ -96,7 +105,7 @@ export function setCharTimeline(
           0
         )
         .fromTo(
-          monitor.position,
+          monitor!.position,
           { y: -10, z: 2 },
           { y: 0, z: 0, delay: 1.5, duration: 3 },
           0

@@ -1,6 +1,7 @@
 import { SplitText } from "gsap/SplitText";
 import gsap from "gsap";
 import { smoother } from "../Navbar";
+import { prefersReducedMotion } from "./motion";
 
 export function initialFX() {
   document.body.style.overflowY = "auto";
@@ -12,7 +13,34 @@ export function initialFX() {
     delay: 1,
   });
 
-  var landingText = new SplitText(
+  gsap.fromTo(
+    [".header", ".icons-section", ".nav-fade"],
+    { opacity: 0 },
+    {
+      opacity: 1,
+      duration: 1.2,
+      ease: "power1.inOut",
+      delay: 0.1,
+    }
+  );
+
+  const TextProps = { type: "chars,lines", linesClass: "split-h2" };
+
+  // Reduced motion: same split layout as the animated version, but static,
+  // showing the first role line ("Applied ML Developer").
+  if (prefersReducedMotion()) {
+    const [white, , teal] = [".landing-h2-info", ".landing-h2-info-1", ".landing-h2-1", ".landing-h2-2"].map(
+      (selector) => new SplitText(selector, TextProps)
+    );
+    // The animated version ends with transformed chars, which keeps them above the
+    // fade overlay; reproduce that end state without the motion.
+    gsap.set([...white.chars, ...teal.chars], { opacity: 1, y: 0 });
+    gsap.set(".landing-info-h2", { opacity: 1, y: 0 });
+    gsap.set([".landing-h2-2", ".landing-h2-info-1"], { opacity: 0 });
+    return;
+  }
+
+  const landingText = new SplitText(
     [".landing-info h3", ".landing-intro h2", ".landing-intro h1"],
     {
       type: "chars,lines",
@@ -33,9 +61,7 @@ export function initialFX() {
     }
   );
 
-  let TextProps = { type: "chars,lines", linesClass: "split-h2" };
-
-  var landingText2 = new SplitText(".landing-h2-info", TextProps);
+  const landingText2 = new SplitText(".landing-h2-info", TextProps);
   gsap.fromTo(
     landingText2.chars,
     { opacity: 0, y: 80, filter: "blur(5px)" },
@@ -61,27 +87,17 @@ export function initialFX() {
       delay: 0.8,
     }
   );
-  gsap.fromTo(
-    [".header", ".icons-section", ".nav-fade"],
-    { opacity: 0 },
-    {
-      opacity: 1,
-      duration: 1.2,
-      ease: "power1.inOut",
-      delay: 0.1,
-    }
-  );
 
-  var landingText3 = new SplitText(".landing-h2-info-1", TextProps);
-  var landingText4 = new SplitText(".landing-h2-1", TextProps);
-  var landingText5 = new SplitText(".landing-h2-2", TextProps);
+  const landingText3 = new SplitText(".landing-h2-info-1", TextProps);
+  const landingText4 = new SplitText(".landing-h2-1", TextProps);
+  const landingText5 = new SplitText(".landing-h2-2", TextProps);
 
   LoopText(landingText2, landingText3);
   LoopText(landingText4, landingText5);
 }
 
 function LoopText(Text1: SplitText, Text2: SplitText) {
-  var tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
+  const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
   const delay = 4;
   const delay2 = delay * 2 + 1;
 
