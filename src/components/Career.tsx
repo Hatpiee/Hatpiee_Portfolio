@@ -1,6 +1,12 @@
+import { useEffect } from "react";
 import "./styles/Career.css";
+import { setAllTimeline } from "./utils/GsapScroll";
 
 const Career = () => {
+  useEffect(() => {
+    setAllTimeline();
+  }, []);
+
   return (
     <div className="career-section section-container">
       <div className="career-container">
@@ -20,7 +26,7 @@ const Career = () => {
               </div>
               <h3>2026</h3>
             </div>
-            <p>May – Jul 2026. Engineered CHITRADARSHI, an on-site CCTV surveillance intelligence system (featured first under My Work), working with operators, researchers and senior stakeholders to turn monitoring needs into technical priorities.</p>
+            <p>May – Aug 2026. Engineered CHITRADARSHI, an on-site CCTV surveillance intelligence system (featured first under My Work), working with operators, researchers and senior stakeholders to turn monitoring needs into technical priorities.</p>
           </div>
           <div className="career-info-box">
             <div className="career-info-in">

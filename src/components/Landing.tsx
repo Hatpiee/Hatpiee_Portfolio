@@ -1,4 +1,6 @@
 import { PropsWithChildren } from "react";
+import { TbDownload } from "react-icons/tb";
+import { RESUME_URL } from "../data/links";
 import "./styles/Landing.css";
 
 const Landing = ({ children }: PropsWithChildren) => {
@@ -13,6 +15,17 @@ const Landing = ({ children }: PropsWithChildren) => {
               <br />
               <span>TRIPATHY</span>
             </h1>
+            {RESUME_URL && (
+              <a
+                className="hero-resume"
+                href={RESUME_URL}
+                download="Shreyash_Tripathy_CV.pdf"
+                data-cursor="disable"
+              >
+                My Resume
+                <TbDownload aria-hidden="true" />
+              </a>
+            )}
           </div>
           <div className="landing-info">
             <h3>AI Engineer &</h3>

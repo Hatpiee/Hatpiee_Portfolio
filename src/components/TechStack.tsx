@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { useRef, useMemo, useState, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import { EffectComposer, N8AO } from "@react-three/postprocessing";
 import {
@@ -38,6 +38,14 @@ function SphereGeo({
   isActive,
 }: SphereProps) {
   const api = useRef<RapierRigidBody | null>(null);
+  // Picked once per sphere; recomputing it on every re-render handed the body a
+  // new random position whenever the parent re-rendered.
+  const [position] = useState<[number, number, number]>(() => [
+    r(20),
+    r(20) - 25,
+    r(20) - 10,
+  ]);
+  const strength = useMemo(() => new THREE.Vector3(), []);
 
   useFrame((_state, delta) => {
     // The body can be missing for a frame when the section mounts already in view.
@@ -47,11 +55,7 @@ function SphereGeo({
       .copy(api.current.translation())
       .normalize()
       .multiply(
-        new THREE.Vector3(
-          -50 * delta * scale,
-          -150 * delta * scale,
-          -50 * delta * scale
-        )
+        strength.set(-50 * delta * scale, -150 * delta * scale, -50 * delta * scale)
       );
 
     api.current.applyImpulse(impulse, true);
@@ -62,7 +66,7 @@ function SphereGeo({
       linearDamping={0.75}
       angularDamping={0.15}
       friction={0.2}
-      position={[r(20), r(20) - 25, r(20) - 10]}
+      position={position}
       ref={api}
       colliders={false}
     >
@@ -84,6 +88,18 @@ function SphereGeo({
   );
 }
 
+// A positive-priority frame callback stops R3F's automatic render; the
+// EffectComposer renders the frame itself, and only while it is enabled.
+// Shaders are compiled up front so the first visible frame doesn't stall.
+function ManualRender() {
+  const { gl, scene, camera } = useThree();
+  useEffect(() => {
+    gl.compile(scene, camera);
+  }, [gl, scene, camera]);
+  useFrame(() => {}, 1);
+  return null;
+}
+
 type PointerProps = {
   vec?: THREE.Vector3;
   isActive: boolean;
@@ -91,15 +107,12 @@ type PointerProps = {
 
 function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
   const ref = useRef<RapierRigidBody>(null);
+  const target = useMemo(() => new THREE.Vector3(), []);
 
   useFrame(({ pointer, viewport }) => {
     if (!isActive) return;
     const targetVec = vec.lerp(
-      new THREE.Vector3(
-        (pointer.x * viewport.width) / 2,
-        (pointer.y * viewport.height) / 2,
-        0
-      ),
+      target.set((pointer.x * viewport.width) / 2, (pointer.y * viewport.height) / 2, 0),
       0.2
     );
     ref.current?.setNextKinematicTranslation(targetVec);
@@ -119,6 +132,24 @@ function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
 
 const TechStack = () => {
   const [isActive, setIsActive] = useState(false);
+  // Starts on so the effect pass renders (and compiles) once before the observer
+  // reports the real visibility.
+  const [inView, setInView] = useState(true);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  // The scene (shadows, 30 spheres and the ambient-occlusion pass) is only drawn
+  // while the section is near the viewport; off screen it used to be drawn every
+  // frame. Physics keeps running, so the spheres still gather in advance.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "200px 0px" }
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -160,9 +191,17 @@ const TechStack = () => {
         })
     );
   }, []);
+  // One random logo per sphere, chosen once rather than on every render.
+  const sphereMaterials = useMemo(
+    () =>
+      spheres.map(
+        () => materials[Math.floor(Math.random() * materials.length)]
+      ),
+    [materials]
+  );
 
   return (
-    <div className="techstack">
+    <div className="techstack" ref={sectionRef}>
       <h2 className="section-heading">
         My tech <span>stack</span>
       </h2>
@@ -191,7 +230,7 @@ const TechStack = () => {
             <SphereGeo
               key={i}
               {...props}
-              material={materials[Math.floor(Math.random() * materials.length)]}
+              material={sphereMaterials[i]}
               isActive={isActive}
             />
           ))}
@@ -201,7 +240,8 @@ const TechStack = () => {
           environmentIntensity={0.5}
           environmentRotation={[0, 4, 2]}
         />
-        <EffectComposer enableNormalPass={false}>
+        <ManualRender />
+        <EffectComposer enableNormalPass={false} enabled={inView}>
           <N8AO color="#0f002c" aoRadius={2} intensity={1.15} />
         </EffectComposer>
       </Canvas>

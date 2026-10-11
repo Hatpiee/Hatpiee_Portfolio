@@ -1,10 +1,13 @@
 import { useEffect, useRef } from "react";
 import "./styles/Cursor.css";
 import gsap from "gsap";
+import { hasFinePointer } from "./utils/viewport";
 
 const Cursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
+    // No mouse, nothing to follow: skip the per-frame loop on touch-only devices.
+    if (!hasFinePointer()) return;
     let hover = false;
     const cursor = cursorRef.current!;
     const mousePos = { x: 0, y: 0 };

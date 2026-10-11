@@ -41,6 +41,9 @@
   position: relative;
   display: none;
 }
+.what-box-in.what-box-in-ready {
+  display: flex;
+}
 .what-content {
   width: 450px;
   height: 33%;

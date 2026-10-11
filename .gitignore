@@ -30,6 +30,10 @@ backup/
 
 private-reference
 
+# Local self-signed certificate for HTTPS testing on a phone (never commit the key)
+.cert/
+
 # Character tooling outputs (decrypted model, intermediates)
 tools/character/model/
 tools/character/tier2/
+tools/character/v3/

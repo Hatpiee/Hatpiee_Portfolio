@@ -76,7 +76,7 @@ export function initialFX() {
   );
 
   gsap.fromTo(
-    ".landing-info-h2",
+    [".landing-info-h2", ".hero-resume"],
     { opacity: 0, y: 30 },
     {
       opacity: 1,

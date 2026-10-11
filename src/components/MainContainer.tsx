@@ -12,6 +12,7 @@ import Honors from "./Honors";
 import TechLabels from "./TechLabels";
 import setSplitText from "./utils/splitText";
 import { useLoading } from "../context/LoadingProvider";
+import { onViewportResize } from "./utils/viewport";
 
 const TechStack = lazy(() => import("./TechStack"));
 
@@ -36,10 +37,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
       .catch(() => undefined)
       .then(() => document.fonts.ready)
       .then(resizeHandler);
-    window.addEventListener("resize", resizeHandler);
-    return () => {
-      window.removeEventListener("resize", resizeHandler);
-    };
+    return onViewportResize(resizeHandler);
   }, [isDesktopView]);
 
   // Re-split when the content width changes without a window resize, e.g. when the

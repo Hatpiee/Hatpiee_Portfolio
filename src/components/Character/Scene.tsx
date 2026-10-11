@@ -12,6 +12,7 @@ import {
 } from "./utils/mouseUtils";
 import setAnimations from "./utils/animationUtils";
 import { setProgress } from "../Loading";
+import { onViewportResize } from "../utils/viewport";
 
 // If the model has not arrived by then, let visitors into the site anyway.
 const LOAD_WATCHDOG_MS = 30000;
@@ -34,7 +35,9 @@ const Scene = () => {
       antialias: true,
     });
     renderer.setSize(rect.width, rect.height);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    // Capped at 2: phones report up to 3-3.5, which more than doubles the pixels drawn
+    // every frame for no visible gain at this size.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1;
     container.appendChild(renderer.domElement);
@@ -57,6 +60,7 @@ const Scene = () => {
     const { loadCharacter } = setCharacter(renderer, scene, camera);
     const watchdog = window.setTimeout(() => progress.clear(), LOAD_WATCHDOG_MS);
     let introTimer: number | undefined;
+    let removeResize: (() => void) | undefined;
 
     const onResize = () => {
       if (character) handleResize(renderer, camera, canvasDiv, character);
@@ -81,7 +85,7 @@ const Scene = () => {
             animations.startIntro();
           }, 2500);
         });
-        window.addEventListener("resize", onResize);
+        removeResize = onViewportResize(onResize);
       })
       .catch((err) => {
         // The page stays fully usable without the 3D character.
@@ -123,9 +127,20 @@ const Scene = () => {
       landingDiv.addEventListener("touchend", onTouchEnd);
     }
 
+    // Skip drawing while the character is scrolled out of view (it is translated
+    // off screen below the What I Do section); the loop itself keeps running.
+    let visible = true;
+    const visibility = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+    });
+    visibility.observe(container);
+
     let frame = 0;
     const animate = () => {
       frame = requestAnimationFrame(animate);
+      // Read every frame so the animation resumes without a jump after a pause.
+      const delta = clock.getDelta();
+      if (!visible) return;
       if (headBone) {
         handleHeadRotation(
           headBone,
@@ -137,7 +152,6 @@ const Scene = () => {
         );
         if (screenLight) light.setPointLight(screenLight);
       }
-      const delta = clock.getDelta();
       if (mixer) {
         mixer.update(delta);
       }
@@ -148,12 +162,13 @@ const Scene = () => {
     return () => {
       disposed = true;
       cancelAnimationFrame(frame);
+      visibility.disconnect();
       clearTimeout(debounce);
       clearTimeout(watchdog);
       clearTimeout(introTimer);
       progress.stop();
       removeHover?.();
-      window.removeEventListener("resize", onResize);
+      removeResize?.();
       document.removeEventListener("mousemove", onMouseMove);
       if (landingDiv) {
         landingDiv.removeEventListener("touchstart", onTouchStart);

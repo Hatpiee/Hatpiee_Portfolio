@@ -43,35 +43,6 @@
   will-change: left, top;
   transition: transform 0.3s ease-out;
 }
-.resume-button {
-  position: absolute;
-  z-index: 99;
-  display: flex;
-  gap: 5px;
-  bottom: 40px;
-  right: 0;
-  width: auto;
-  text-wrap: nowrap;
-  letter-spacing: 4px;
-  font-size: 15px;
-  line-height: 15px;
-  font-weight: 600;
-  color: #5e5e5e;
-  cursor: pointer;
-  transition: 0.5s;
-  transform-origin: left bottom;
-  transform: translateX(100%) rotateZ(-90deg);
-}
-.resume-button:hover {
-  color: #fff;
-}
-div.resume-button span {
-  color: #fff;
-  font-size: 17px;
-  margin-top: -1px;
-  display: flex;
-  align-items: center;
-}
 .check-line {
   position: fixed;
   top: 655px;
@@ -85,19 +56,11 @@ div.resume-button span {
   .social-icons {
     display: flex;
     gap: 20px;
+    /* Pinned to the screen's left gutter (the 10px padding sits outside it),
+       not to the content column, so it never runs into the hero text. */
+    left: calc(var(--rail-left) - 10px - var(--content-left));
   }
   .social-icons a {
     font-size: 28px;
-  }
-}
-@media only screen and (min-width: 768px) {
-  .resume-button {
-    transform: none;
-    font-size: 20px;
-    line-height: 20px;
-  }
-  div.resume-button span {
-    font-size: 23px;
-    margin-top: -1.5px;
   }
 }

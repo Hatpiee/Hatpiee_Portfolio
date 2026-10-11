@@ -1,6 +1,6 @@
 import { MdArrowOutward, MdCopyright } from "react-icons/md";
 import "./styles/Contact.css";
-import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "../data/links";
+import { EMAIL, GITHUB_URL, INSTAGRAM_URL, LINKEDIN_URL } from "../data/links";
 
 const Contact = () => {
   return (
@@ -50,6 +50,16 @@ const Contact = () => {
               className="contact-social"
             >
               LinkedIn <MdArrowOutward aria-hidden="true" />
+            </a>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="disable"
+              className="contact-social"
+              aria-label="Instagram profile (opens in a new tab)"
+            >
+              Instagram <MdArrowOutward aria-hidden="true" />
             </a>
             <a
               href={`mailto:${EMAIL}`}

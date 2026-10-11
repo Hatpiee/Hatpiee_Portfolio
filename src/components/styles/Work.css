@@ -79,6 +79,11 @@
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Horizontal swipes here change the slide (Work.tsx); keep the browser from also
+     treating them as a page pan or a swipe-back navigation. Vertical scrolling is
+     unaffected. */
+  touch-action: pan-y;
+  overscroll-behavior-x: contain;
 }
 
 .carousel-track {

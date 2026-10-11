@@ -1,7 +1,8 @@
 import { SKILL_GROUPS } from "../data/techStack";
+import TechSpheres from "./TechSpheres";
 
 // Grouped skills under the 3D spheres. On touch layouts, where the 3D section
-// isn't rendered, it stands on its own with a heading.
+// isn't rendered, it stands on its own with a heading and a CSS sphere pile.
 const TechLabels = ({ standalone }: { standalone: boolean }) => {
   return (
     <section
@@ -13,6 +14,7 @@ const TechLabels = ({ standalone }: { standalone: boolean }) => {
           My tech <span>stack</span>
         </h2>
       )}
+      {standalone && <TechSpheres />}
       <dl className="skill-groups">
         {SKILL_GROUPS.map((group) => (
           <div className="skill-group" key={group.name}>

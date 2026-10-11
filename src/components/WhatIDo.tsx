@@ -4,9 +4,28 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const WhatIDo = () => {
   const containerRef = useRef<(HTMLDivElement | null)[]>([]);
+  const boxRef = useRef<HTMLDivElement>(null);
   const setRef = (el: HTMLDivElement | null, index: number) => {
     containerRef.current[index] = el;
   };
+  // The cards start hidden and appear once they scroll into view. On desktop the
+  // character's desk timeline (GsapScroll) sets an inline display that overrides this;
+  // on phones, and wherever the 3D character can't load (e.g. no WebGL, or plain HTTP
+  // where Web Crypto is unavailable), nothing else would ever show them.
+  useEffect(() => {
+    const box = boxRef.current;
+    if (!box?.parentElement) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        box.classList.add("what-box-in-ready");
+        observer.disconnect();
+      },
+      { rootMargin: "0px 0px -30% 0px" }
+    );
+    observer.observe(box.parentElement);
+    return () => observer.disconnect();
+  }, []);
   useEffect(() => {
     if (!ScrollTrigger.isTouch) return;
     const handlers = containerRef.current.flatMap((container) => {
@@ -29,7 +48,7 @@ const WhatIDo = () => {
         </h2>
       </div>
       <div className="what-box">
-        <div className="what-box-in">
+        <div className="what-box-in" ref={boxRef}>
           <div className="what-border2">
             <svg width="100%">
               <line

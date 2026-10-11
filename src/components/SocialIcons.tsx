@@ -1,12 +1,18 @@
-import { FaEnvelope, FaGithub, FaLinkedinIn } from "react-icons/fa6";
+import { FaEnvelope, FaGithub, FaInstagram, FaLinkedinIn } from "react-icons/fa6";
 import "./styles/SocialIcons.css";
-import { EMAIL, GITHUB_URL, LINKEDIN_URL, RESUME_URL } from "../data/links";
-import { TbNotes } from "react-icons/tb";
+import {
+  EMAIL,
+  GITHUB_URL,
+  INSTAGRAM_URL,
+  LINKEDIN_URL,
+} from "../data/links";
 import { useEffect } from "react";
-import HoverLinks from "./HoverLinks";
+import { hasFinePointer } from "./utils/viewport";
 
 const SocialIcons = () => {
   useEffect(() => {
+    // The icons drift towards the mouse; without one, skip their per-frame loops.
+    if (!hasFinePointer()) return;
     const social = document.getElementById("social") as HTMLElement;
     const cleanups: (() => void)[] = [];
 
@@ -80,24 +86,21 @@ const SocialIcons = () => {
           </a>
         </span>
         <span>
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram profile"
+          >
+            <FaInstagram />
+          </a>
+        </span>
+        <span>
           <a href={`mailto:${EMAIL}`} aria-label="Email">
             <FaEnvelope />
           </a>
         </span>
       </div>
-      {RESUME_URL && (
-        <a
-          className="resume-button"
-          href={RESUME_URL}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <HoverLinks text="RESUME" />
-          <span>
-            <TbNotes />
-          </span>
-        </a>
-      )}
     </div>
   );
 };

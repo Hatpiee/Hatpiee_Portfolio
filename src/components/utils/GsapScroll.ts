@@ -143,8 +143,23 @@ export function setCharTimeline(
   }
 }
 
+// The career timeline doesn't involve the character, so Career.tsx builds it on mount
+// (otherwise, without the 3D character, the line never grew and its dot stayed pinned
+// at the top, blinking). It is rebuilt with the character's timelines and replaces
+// the previous one instead of stacking.
+let careerTimeline: gsap.core.Timeline | undefined;
+let careerBoxTweens: gsap.core.Tween[] = [];
+
 export function setAllTimeline() {
-  const careerTimeline = gsap.timeline({
+  careerTimeline?.scrollTrigger?.kill();
+  careerTimeline?.kill();
+  careerBoxTweens.forEach((tween) => {
+    tween.scrollTrigger?.kill();
+    tween.kill();
+  });
+  careerBoxTweens = [];
+  const desktop = window.innerWidth > 1024;
+  careerTimeline = gsap.timeline({
     scrollTrigger: {
       trigger: ".career-section",
       start: "top 30%",
@@ -168,12 +183,6 @@ export function setAllTimeline() {
       0
     )
     .fromTo(
-      ".career-info-box",
-      { opacity: 0 },
-      { opacity: 1, stagger: 0.1, duration: 0.5 },
-      0
-    )
-    .fromTo(
       ".career-dot",
       { animationIterationCount: "infinite" },
       {
@@ -184,7 +193,32 @@ export function setAllTimeline() {
       0
     );
 
-  if (window.innerWidth > 1024) {
+  // Entries fade in as they arrive. On desktop that's staggered across the whole
+  // section's scroll; the stacked mobile entries are taller than the screen in total,
+  // so there the same stagger left an entry still half-faded while being read. On
+  // phones and tablets each entry fades in over its own approach to the reading area.
+  if (desktop) {
+    careerTimeline.fromTo(
+      ".career-info-box",
+      { opacity: 0 },
+      { opacity: 1, stagger: 0.1, duration: 0.5 },
+      0
+    );
+  } else {
+    careerBoxTweens = gsap.utils.toArray<HTMLElement>(".career-info-box").map((box) =>
+      gsap.fromTo(
+        box,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          ease: "none",
+          scrollTrigger: { trigger: box, start: "top 95%", end: "top 70%", scrub: true },
+        }
+      )
+    );
+  }
+
+  if (desktop) {
     careerTimeline.fromTo(
       ".career-section",
       { y: 0 },

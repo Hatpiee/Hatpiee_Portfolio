@@ -6,6 +6,7 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 import "./styles/Navbar.css";
 import { EMAIL } from "../data/links";
 import { prefersReducedMotion } from "./utils/motion";
+import { onViewportResize } from "./utils/viewport";
 
 gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
 export let smoother: ScrollSmoother;
@@ -36,11 +37,10 @@ const Navbar = () => {
     };
     const links = document.querySelectorAll<HTMLAnchorElement>(".header ul a");
     links.forEach((link) => link.addEventListener("click", onLinkClick));
-    const onResize = () => ScrollSmoother.refresh(true);
-    window.addEventListener("resize", onResize);
+    const removeResize = onViewportResize(() => ScrollSmoother.refresh(true));
     return () => {
       links.forEach((link) => link.removeEventListener("click", onLinkClick));
-      window.removeEventListener("resize", onResize);
+      removeResize();
       smoother.kill();
     };
   }, []);

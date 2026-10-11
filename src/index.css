@@ -23,6 +23,14 @@
   --vh: 100vh;
   --vh: 100svh;
 
+  /* Social rail: a fixed column in its own gutter at the left edge of the screen.
+     --rail-clear is where content beside it may start (viewport coordinates);
+     --content-left is where the centred content column starts. */
+  --rail-left: 8px;
+  --rail-size: 50px;
+  --rail-clear: calc(var(--rail-left) + var(--rail-size) + 16px);
+  --content-left: max(3vw, (100vw - var(--cMaxWidth, 1920px)) / 2);
+
   /* Type system: a heavy condensed grotesk for display, Geist for everything else. */
   --font-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
   --font-body: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -34,7 +42,8 @@
   --fs-small: 14px;
   --fs-body: 16px;
   --fs-lead: 18px;
-  --fs-section: clamp(52px, 7vw, 120px);
+  /* The floor scales below ~370px wide so "ACHIEVEMENTS" fits a 320px screen. */
+  --fs-section: clamp(min(52px, 14vw), 7vw, 120px);
 }
 
 h1,

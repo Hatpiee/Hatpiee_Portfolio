@@ -245,9 +245,10 @@ const Work = () => {
   const touchStartX = useRef<number | null>(null);
 
   // Slides share one height so the page doesn't move as the carousel changes. On
-  // phones the text-heavy technical projects are roughly twice as tall as the
-  // hackathon ones, so there they form two height groups instead of leaving the
-  // short cards mostly empty. Content is centred within its slide.
+  // phones slide heights vary too much for that (a shared height left up to ~140px
+  // of empty space above and below the shorter cards), so each slide keeps its own
+  // height there and the track animates between them. Content is centred within
+  // its slide.
   useLayoutEffect(() => {
     const slides = slideRefs.current;
     const contents = slides.map((slide) =>
@@ -259,7 +260,7 @@ const Work = () => {
       const padding =
         parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
       const split = window.innerWidth <= PHONE_MAX_WIDTH;
-      const groupOf = (i: number) => (split ? projects[i].stackLabel : "all");
+      const groupOf = (i: number) => (split ? String(i) : "all");
       const tallest = new Map<string, number>();
       contents.forEach((content, i) => {
         const height = content?.offsetHeight ?? 0;

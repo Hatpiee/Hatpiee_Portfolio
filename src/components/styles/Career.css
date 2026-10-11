@@ -219,6 +219,8 @@
 
   .career-section {
     padding-top: 90px;
+    /* The last entry's own margin already separates it from My Work. */
+    padding-bottom: 20px;
     margin-top: -70px;
 
     align-items: start;

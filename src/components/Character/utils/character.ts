@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { DRACOLoader, GLTF, GLTFLoader } from "three-stdlib";
 import { setCharTimeline, setAllTimeline } from "../../utils/GsapScroll";
 import { decryptFile } from "./decrypt";
-import applyAppearance, { applyBeard, attachHair } from "./appearance";
+import applyAppearance, { applyBeard, attachHair, attachOvershirt } from "./appearance";
 
 const setCharacter = (
   renderer: THREE.WebGLRenderer,
@@ -27,8 +27,13 @@ const setCharacter = (
       const character = gltf.scene;
       await renderer.compileAsync(character, camera, scene);
       applyAppearance(character);
-      // Neither throws: on failure the character keeps its cap / original face.
-      await Promise.all([attachHair(character, loader), applyBeard(character)]);
+      // None of these throw: on failure the character keeps its cap, original face
+      // or original shirt.
+      await Promise.all([
+        attachHair(character, loader),
+        applyBeard(character, loader),
+        attachOvershirt(character, loader),
+      ]);
       character.traverse((child) => {
         const mesh = child as THREE.Mesh;
         if (mesh.isMesh) {

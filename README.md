@@ -48,6 +48,40 @@ npm run build    # type-checks, then builds to dist/
 npm run preview  # serves the production build
 ```
 
+### Testing on a phone
+
+The phone and the computer must be on the same Wi-Fi network. Vite prints the address to open
+under `Network:` when it starts (`https://<computer's LAN IP>:5173/`); no IP is configured in
+the project.
+
+The 3D character is decrypted with the browser's Web Crypto API, which browsers only allow on
+HTTPS or `localhost`. Over plain `http://<LAN IP>` (e.g. `npm run dev`) the page falls back to a
+slightly slower built-in JS decryption, so the character still loads, but Chrome blocks file
+downloads (such as **My Resume**) from plain-HTTP sites other than `localhost`, unless that
+address is added under `chrome://flags/#unsafely-treat-insecure-origin-as-secure` on the phone.
+The HTTPS scripts test the
+phone in a secure context, as on the deployed site. They need a local self-signed certificate,
+created once (from Git Bash on Windows; `MSYS_NO_PATHCONV=1` stops Git Bash rewriting `/CN=...`):
+
+```bash
+mkdir -p .cert
+MSYS_NO_PATHCONV=1 openssl req -x509 -newkey rsa:2048 -nodes -days 365 \
+  -subj "/CN=localhost" -addext "subjectAltName=DNS:localhost" \
+  -keyout .cert/dev-key.pem -out .cert/dev-cert.pem
+```
+
+`.cert/` is git-ignored; never commit it.
+
+```bash
+npm run dev:https                   # dev server on the LAN: https://<LAN IP>:5173/
+npm run build && npm run preview:https   # production build on the LAN: https://<LAN IP>:4173/
+```
+
+The phone shows a certificate warning the first time, because the certificate is self-signed.
+Continue past it (Chrome: **Advanced → Proceed**; Safari: **Show Details → visit this
+website**). `npm run dev` also listens on the LAN, over plain HTTP. If the phone cannot connect
+at all, allow Node.js through the Windows firewall for the network profile in use.
+
 ## Deployment (Vercel)
 
 The project is a static Vite single-page site. No environment variables are required.
@@ -58,8 +92,9 @@ The project is a static Vite single-page site. No environment variables are requ
 
 ## Resume
 
-The resume button stays hidden until `RESUME_URL` in `src/data/links.ts` points to a PDF in
-`public/`. Only publish a version that does not include a phone number.
+The hero's **My Resume** button downloads `public/Shreyash_Tripathy_CV.pdf`, set by
+`RESUME_URL` in `src/data/links.ts` (`null` hides the button). Only publish a version that does
+not include a phone number.
 
 ## License
 
