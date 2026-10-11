@@ -5,14 +5,6 @@ interactive 3D site built with React, TypeScript, Vite, Three.js, React Three Fi
 
 ![Portfolio preview](public/og-image.png)
 
-## Credits
-
-This site is a customisation of the open-source 3D portfolio template by **Rajesh Chityal**
-(MIT License, see [LICENSE](LICENSE)), through the version published at
-[akashrmalhotra/3d-portfolio](https://github.com/akashrmalhotra/3d-portfolio). The layout,
-animations, scroll choreography and the original 3D character and scene come from that
-template.
-
 ## What was customised
 
 - **Content:** hero, about, skills, experience timeline, projects, contact and metadata
@@ -99,3 +91,7 @@ not include a phone number.
 ## License
 
 MIT, see [LICENSE](LICENSE). The original copyright notice is retained.
+
+## Credits
+
+Built on the open-source 3D portfolio template by Rajesh Chityal (MIT, see [LICENSE](LICENSE)).
