@@ -1,0 +1,284 @@
+/* Fonts are linked from index.html: Archivo (display) and Geist (text). */
+
+:root {
+  font-family: var(--font-body);
+
+  font-optical-sizing: auto;
+  font-style: normal;
+  line-height: 1.5;
+  scroll-behavior: smooth;
+  color-scheme: light dark;
+  color: #eae5ec;
+  background-color: var(--backgroundColor);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  --accentColor: #5eead4;
+  --backgroundColor: #0a0e17;
+  --vh: 100vh;
+  --vh: 100svh;
+
+  /* Social rail: a fixed column in its own gutter at the left edge of the screen.
+     --rail-clear is where content beside it may start (viewport coordinates);
+     --content-left is where the centred content column starts. */
+  --rail-left: 8px;
+  --rail-size: 50px;
+  --rail-clear: calc(var(--rail-left) + var(--rail-size) + 16px);
+  --content-left: max(3vw, (100vw - var(--cMaxWidth, 1920px)) / 2);
+
+  /* Type system: a heavy condensed grotesk for display, Geist for everything else. */
+  --font-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display-stretch: 70%;
+  --text-muted: #a3a6ad;
+  --text-soft: #cfd1d6;
+  --line: rgba(255, 255, 255, 0.12);
+  --fs-eyebrow: 13px;
+  --fs-small: 14px;
+  --fs-body: 16px;
+  --fs-lead: 18px;
+  /* The floor scales below ~370px wide so "ACHIEVEMENTS" fits a 320px screen. */
+  --fs-section: clamp(min(52px, 14vw), 7vw, 120px);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-body);
+}
+
+/* Shared section heading: oversized, heavy and condensed, with tight leading. */
+.section-heading {
+  font-family: var(--font-display);
+  font-stretch: var(--display-stretch);
+  font-weight: 850;
+  font-size: var(--fs-section);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  word-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 clamp(36px, 5vw, 72px);
+}
+
+.section-heading span {
+  color: var(--accentColor);
+}
+
+/* Small uppercase label above headings and content groups. */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accentColor);
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: var(--accentColor);
+}
+
+main {
+  opacity: 1;
+  transition: 0.3s;
+}
+
+.main-active {
+  opacity: 0;
+  animation: fadeIn 1s 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+  100% {
+    opacity: 1;
+  }
+}
+
+body {
+  margin: 0;
+  height: auto;
+  background-color: #050810;
+  flex-grow: 1;
+  --cWidth: calc(100% - 30px);
+  --cMaxWidth: 1920px;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+.main-body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+.container-main {
+  width: 100%;
+  margin: auto;
+  position: relative;
+}
+
+.container1 {
+  width: var(--cWidth);
+  height: var(--vh);
+  margin: auto;
+  position: relative;
+}
+
+.split-line {
+  overflow: hidden;
+}
+
+.split-h2 {
+  overflow: hidden;
+  display: flex;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+}
+
+.techstack {
+  width: 100%;
+  position: relative;
+  overflow: clip;
+  height: var(--vh);
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: -100px;
+}
+
+.techstack h2 {
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  top: 120px;
+  left: 0;
+  margin: 0;
+}
+
+/* Text list of the technologies on the spheres (and the whole section on touch layouts). */
+.tech-labels {
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  background-color: var(--backgroundColor);
+  padding: 140px 0 0;
+}
+
+.skill-groups {
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+
+.skill-group {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.8fr) minmax(0, 3.2fr);
+  gap: 24px;
+  align-items: baseline;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+/* The Contact section's top rule closes the list. */
+.skill-group:last-child {
+  border-bottom: none;
+}
+
+.skill-group dt {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.skill-group dd {
+  margin: 0;
+}
+
+.tech-labels ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tech-labels li {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-soft);
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+@media screen and (max-width: 600px) {
+  .skill-group {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+}
+
+.tech-labels-mobile {
+  padding-top: 40px;
+}
+
+@media screen and (min-width: 768px) {
+  body {
+    --cWidth: 94%;
+  }
+}
+
+/* Keyboard focus is visible everywhere; mouse clicks don't show the ring. */
+:focus-visible {
+  outline: 2px solid var(--accentColor);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Contact details stay copyable even though the template disables selection. */
+.contact-section,
+.contact-section * {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Looping decorations hold their first frame instead of jumping to the end. */
+  .landing-circle1,
+  .landing-circle2,
+  .career-dot,
+  .loading-box,
+  .loaderGame-in,
+  .loaderGame-ball {
+    animation-play-state: paused !important;
+  }
+}

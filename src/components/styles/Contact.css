@@ -1,0 +1,123 @@
+.contact-section {
+  margin: auto;
+  padding: 60px 0 100px;
+  margin-top: 60px;
+  position: relative;
+  z-index: 2;
+  background-color: var(--backgroundColor);
+  border-top: 1px solid var(--line);
+}
+
+.contact-flex {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.7fr) minmax(0, 0.9fr);
+  gap: 48px;
+}
+
+.contact-flex h4 {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 10px;
+}
+
+.contact-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.contact-group + .contact-group {
+  margin-top: 28px;
+}
+
+.contact-flex p {
+  margin: 0;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--text-soft);
+}
+
+.contact-flex p + p {
+  margin-top: 6px;
+}
+
+.contact-email {
+  font-size: 20px;
+  font-weight: 500;
+  color: #eae5ec;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  transition: border-color 0.3s;
+}
+
+.contact-email:hover {
+  border-color: var(--accentColor);
+}
+
+a.contact-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 500;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  transition: border-color 0.3s, color 0.3s;
+}
+
+a.contact-social:hover {
+  border-color: var(--accentColor);
+}
+
+.contact-box h2 {
+  font-family: var(--font-display);
+  font-stretch: var(--display-stretch);
+  font-weight: 800;
+  font-size: 30px;
+  line-height: 1.05;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.contact-box h2>span {
+  color: var(--accentColor);
+}
+
+.contact-box h5 {
+  font-size: var(--fs-small);
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  margin: 16px 0 0;
+}
+
+@media only screen and (max-width: 1100px) {
+  .contact-flex {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .contact-box:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .contact-flex {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+
+  .contact-section {
+    margin-top: 40px;
+    padding-bottom: 60px;
+  }
+
+  .contact-email {
+    font-size: 17px;
+    overflow-wrap: anywhere;
+  }
+}
